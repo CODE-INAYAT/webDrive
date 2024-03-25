@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Drive Files</title>
+</head>
+<body>
+  <h1>Google Drive Files</h1>
+  <ul id="fileList"></ul>
+
+  <script>
+    // Function to fetch files from Google Apps Script web app
+    function listFiles() {
+      fetch('YOUR_WEB_APP_URL')
+        .then(response => response.json())
+        .then(data => {
+          const fileList = document.getElementById('fileList');
+          fileList.innerHTML = ''; // Clear previous list
+          data.forEach(file => {
+            const listItem = document.createElement('li');
+            const fileLink = document.createElement('a');
+            fileLink.textContent = file.name;
+            fileLink.href = file.url;
+            fileLink.target = '_blank'; // Open link in new tab
+            listItem.appendChild(fileLink);
+
+            const downloadLink = document.createElement('a');
+            downloadLink.textContent = ' (Download)';
+            downloadLink.href = file.url + '&export=download'; // Link to download the file
+            listItem.appendChild(downloadLink);
+
+            fileList.appendChild(listItem);
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching files:', error);
+        });
+    }
+
+    // Call the function to list files when the page loads
+    listFiles();
+  </script>
+</body>
+</html>
